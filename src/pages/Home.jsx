@@ -22,7 +22,7 @@ const Home = () => {
       .then(res => setCategories(res.data.data.categories));
   }, []);
 
-  console.log(productsList);
+  // console.log(productsList);
 
   const addToCartFromHome = (productFromHome) =>{
     const productHome = {
@@ -71,7 +71,7 @@ const Home = () => {
           </div>
         </Col>
         {/* PRODUCTS */}
-        <Col lg={10}>
+        <Col lg={10} className='mb-5'>
           <Row xs={1} md={2} lg={3} className="g-4">
             {
               productsList.map((product) => (
@@ -83,8 +83,6 @@ const Home = () => {
                           className='img-product'
                           variant="top"
                           src={product.productImgs[0]}
-                        // onMouseOver={()=> }??
-                        // onMouseOut={()=> }??
                         />
                       </div>
                       <Card.Body>
@@ -98,6 +96,7 @@ const Home = () => {
               ))}
           </Row>
         </Col>
+        <div style={{textAlign: 'center'}}>Developed by Evelyn H. GL</div>
       </Row>
     </div>
   );

@@ -15,7 +15,7 @@ const NavBar = () => {
 
   return (
     <>
-      <Navbar bg="dark" expand="lg">
+      <Navbar bg="dark" expand="lg" sticky="top">
         <Container>
           <Navbar.Brand as={Link} to='/' className='nav-bar-options'>Home</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />

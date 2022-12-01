@@ -121,7 +121,7 @@ const ProductDetail = () => {
                   </Link>
                   <button
                     className='btn-add-cart'
-                    onClick={()=> addToCartFronRelatedProducts(productRelated.id)}
+                    onClick={() => addToCartFronRelatedProducts(productRelated.id)}
                   >
                     <i className="fa-solid fa-cart-shopping"></i>
                   </button>
