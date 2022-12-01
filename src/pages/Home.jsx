@@ -4,6 +4,7 @@ import { filterByNAmeThunk, filterProductThunk, getProductsThunk, setProducts } 
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Button, Card, Col, Form, InputGroup, ListGroup, ListGroupItem, Row } from 'react-bootstrap';
+import { addToCartThunk, checkoutCartThunk } from '../store/slices/cart.slice';
 
 const Home = () => {
 
@@ -11,6 +12,7 @@ const Home = () => {
   const productsList = useSelector(state => state.products);
   const [inputValue, setInputValue] = useState('');
   const [categories, setCategories] = useState([]);
+  const [quantityFromHome, setQuantityFromHome] = useState(1);
 
 
   useEffect(() => {
@@ -21,6 +23,15 @@ const Home = () => {
   }, []);
 
   console.log(productsList);
+
+  const addToCartFromHome = (productFromHome) =>{
+    const productHome = {
+      id: `${productFromHome}`,
+      quantity: quantityFromHome 
+    }
+    // console.log(productHome);
+    dispatch(addToCartThunk(productHome))
+  }
 
 
   return (
@@ -43,7 +54,7 @@ const Home = () => {
         {/* CATEGORIES */}
         <Col lg={2} className='mb-4'>
           <div>
-            <h3>Categories</h3>
+            <h3 style={{color: 'yellowgreen', textAlign: 'center'}}>Categories</h3>
             <ListGroup>
               {
                 categories.map((category) => (
@@ -72,7 +83,6 @@ const Home = () => {
                           className='img-product'
                           variant="top"
                           src={product.productImgs[0]}
-
                         // onMouseOver={()=> }??
                         // onMouseOut={()=> }??
                         />
@@ -82,7 +92,7 @@ const Home = () => {
                         <Card.Text className='title-and-price'>Price: {product.price}</Card.Text>
                       </Card.Body>
                     </Link>
-                    <button><i className="fa-solid fa-cart-shopping"></i></button>
+                    <button onClick={()=> addToCartFromHome(product.id)}><i className="fa-solid fa-cart-shopping"></i></button>
                   </Card>
                 </Col>
               ))}

@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getProductsThunk } from '../store/slices/products.slice';
 import { Link } from 'react-router-dom';
 import { Card, Carousel, Col, ListGroup, Row } from 'react-bootstrap';
+import { addToCartThunk } from '../store/slices/cart.slice';
 
 const ProductDetail = () => {
 
@@ -23,7 +24,35 @@ const ProductDetail = () => {
     productRelated.id !== productFound.id
   )
 
-  // console.log(productsList);
+  // console.log(productFound);
+
+  const [quantity, setQuantity] = useState(1);
+
+  const increment = () => {
+    setQuantity(quantity + 1);
+  }
+
+  const decrement = () => {
+    setQuantity(quantity - 1);
+  }
+
+  const addToCart = () => {
+    const product = {
+      id: productFound.id,
+      quantity: quantity
+    };
+    // console.log(product);
+    dispatch(addToCartThunk(product));
+  };
+
+  const addToCartFronRelatedProducts = (product) => {
+    const product2 = {
+      id: `${product}`,
+      quantity: quantity
+    };
+    // console.log(product2);
+    dispatch(addToCartThunk(product2));
+  }
 
   return (
     <div>
@@ -56,13 +85,19 @@ const ProductDetail = () => {
         <Col lg={6} className='product-id'>
           <h2>{productFound?.title}</h2>
           <p>{productFound?.description}</p>
-          <h4>Price: {productFound?.price}</h4>
+          <h4>$ {productFound?.price}</h4>
           <div className='btns-quantity'>
-            <button className='btn-plus-and-less'>+</button>
-            <p>cantidad</p>
-            <button className='btn-plus-and-less'>-</button>
+            <button onClick={increment} className='btn-plus-and-less'>+</button>
+            <input
+              type='text'
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+              style={{ width: '10%', margin: '0 10px', textAlign: 'center' }}
+            >
+            </input>
+            <button onClick={decrement} disabled={quantity <= 1} className='btn-plus-and-less'>-</button>
           </div>
-          <button className='btn-add-cart'>Add to the cart</button>
+          <button onClick={addToCart} className='btn-add-cart'>Add to the cart</button>
         </Col>
         {/* PRODUCTS RELATED */}
         <h4 className='title-related'>You might also be interested</h4>
@@ -81,10 +116,15 @@ const ProductDetail = () => {
                     </div>
                     <Card.Body>
                       <Card.Title className='title-and-price'> {productRelated.title}</Card.Title>
-                      <Card.Text className='title-and-price'>Price: {productRelated.price}</Card.Text>
+                      <Card.Text className='title-and-price'>$ {productRelated.price}</Card.Text>
                     </Card.Body>
                   </Link>
-                  <button className='btn-add-cart'><i className="fa-solid fa-cart-shopping"></i></button>
+                  <button
+                    className='btn-add-cart'
+                    onClick={()=> addToCartFronRelatedProducts(productRelated.id)}
+                  >
+                    <i className="fa-solid fa-cart-shopping"></i>
+                  </button>
                 </Card>
               </Col>
             ))
